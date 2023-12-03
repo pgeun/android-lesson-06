@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -70,4 +71,13 @@ public class UserDataService {
         return userIds;
     }
 
+    @Transactional
+    public boolean removeUserById(String userId) {
+        Optional<UserDataEntity> userOptional = repository.findUserDataEntityByUserId(userId);
+        if (userOptional.isPresent()) {
+            repository.delete(userOptional.get());
+            return true;
+        }
+        return false;
+    }
 }
