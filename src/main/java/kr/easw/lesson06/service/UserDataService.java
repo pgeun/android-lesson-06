@@ -11,6 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -55,4 +58,16 @@ public class UserDataService {
         // 만약 비밀번호가 일치하지 않는다면, BadCredentialsException을 던집니다.
         throw new BadCredentialsException("Credentials invalid");
     }
+
+    public List<String> getAllUserIds() {
+        List<String> userIds = repository.findAll().stream()
+                .map(UserDataEntity::getUserId)
+                .collect(Collectors.toList());
+
+        // 사용자 ID를 확인하기 위한 디버그 출력
+        System.out.println("User IDs: " + userIds);
+
+        return userIds;
+    }
+
 }

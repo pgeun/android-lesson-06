@@ -1,13 +1,31 @@
 <html>
-    <body>
-        <h1> 사용자 대시보드 <a href="/admin">(관리자 대시보드로 이동)</a></h1>
-        <span> REST 요청을 보내 파일 목록을 불러오고, 다음 li에 다운로드 링크와 함께 삽입하십시오. </span>
-        <span>REST로 데이터 목록을 불러오는 예제는 <a href="https://github.com/java-lesson-cbnu/android-lesson-01">1번 예제 레포지토리</a>를 참고하세요. </span>
-        <ul id="dataList">
+<body>
+<h1> 사용자 대시보드 <a href="/admin">(관리자 대시보드로 이동)</a></h1>
+<span> REST 요청을 보내 파일 목록을 불러오고, 다음 li에 다운로드 링크와 함께 삽입하십시오. </span>
+<span>REST로 데이터 목록을 불러오는 예제는 <a href="https://github.com/java-lesson-cbnu/android-lesson-01">1번 예제 레포지토리</a>를 참고하세요. </span>
+<ul id="dataList"></ul>
 
-        </ul>
-    </body>
-    <script>
-        // 이곳에 코드를 구현하십시오.
-    </script>
+<script>
+    // 페이지 로드 시 데이터 목록을 불러와 표시하는 함수
+    async function loadDataList() {
+      // api/v1/data/list로 GET 요청을 보냅니다.
+      const response = await fetch('/api/v1/data/list');
+      // 응답을 JSON으로 파싱합니다.
+      const result = await response.json();
+
+      // 응답을 순회(iterate)하며, 데이터 목록을 ul#dataList에 삽입합니다.
+      for (let i = 0; i < result.length; i++) {
+        // li 엘리먼트를 생성합니다.
+        let li = document.createElement("li");
+        // li 엘리먼트에 데이터를 삽입합니다.
+        li.appendChild(document.createTextNode(result[i].text));
+        // ul#dataList에 li 엘리먼트를 삽입합니다.
+        document.getElementById("dataList").appendChild(li);
+      }
+    }
+
+    // 페이지 로드 시 데이터 목록을 불러와 표시합니다.
+    loadDataList();
+</script>
+</body>
 </html>
